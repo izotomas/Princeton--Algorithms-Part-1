@@ -1,4 +1,4 @@
-package w2.stacks_queues.resizing;
+package w2.stacks_queues.stack.resizing;
 
 /**
  * Created by tomasizo on 9/11/16.

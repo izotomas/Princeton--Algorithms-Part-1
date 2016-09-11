@@ -1,32 +1,55 @@
-package w2.stacks_queues.stack.resizing;
+package w2.stacks_queues.iterable;
+
+import java.util.Iterator;
 
 /**
  * Created by tomasizo on 9/11/16.
  */
-public class ResizingArrayStackOfStrings {
-    private String[] s;
+
+public class ResizingArrayStack<Item> implements Iterable<Item> {
+
+    private Item[] items;
     private int N = 0;
 
-    public ResizingArrayStackOfStrings()
-    { s = new String[1]; }
+    public ResizingArrayStack()
+    { items = (Item[]) new Object[1]; }
 
-    public void push(String item) {
-        if (N == s.length) resize(2 * s.length );
-        s[N++] = item;
+    public void push(Item item) {
+        if (N == items.length) resize(2 * items.length );
+        items[N++] = item;
     }
 
     private void resize(int capacity) {
-        String[] copy = new String[capacity];
+        Item[] copy = (Item[]) new Object[capacity];
         for (int i = 0; i < N; i++) {
-           copy[i] = s[i];
+           copy[i] = items[i];
         }
-        s = copy;
+        items = copy;
     }
 
-    public String pop() {
-        String item = s[--N];
-        s[N] = null;
-        if (N > 0 && N == s.length/4) resize(s.length/2);
+    public Item pop() {
+        Item item = items[--N];
+        items[N] = null;
+        if (N > 0 && N == items.length/4) resize(items.length/2);
         return item;
+    }
+
+    @Override
+    public Iterator<Item> iterator() {
+        return new ReverseArrayIterator();
+    }
+
+    private class ReverseArrayIterator implements Iterator {
+
+        private int i = N;
+
+        @Override
+        public boolean hasNext() { return i > N; }
+
+        @Override
+        public Object next() { return items[--i]; }
+
+        @Override
+        public void remove() { /* not supported */ }
     }
 }
