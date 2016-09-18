@@ -36,7 +36,7 @@ public class QuickSelect {
     }
 
     private static boolean less(Comparable a, Comparable b) {
-        return a.compareTo(b) == -1;
+        return a.compareTo(b) < 0;
     }
 
     private static void exch(Comparable[]a, int i, int j) {
