@@ -8,18 +8,23 @@ import java.util.Arrays;
  */
 public class FastCollinearPoints {
     private final LineSegment[] segments;
+    private final Point[] points;
 
     // finds all line segments containing 4 or more points
     public FastCollinearPoints(Point[] points) {
         if (nullpoints(points)) throw new NullPointerException();
+        this.points = new Point[points.length];
+        for (int i = 0; i < points.length; i++) {
+            this.points[i] = points[i];
+        }
 
-        Arrays.sort(points);
-        Point[] aux = Arrays.copyOf(points, points.length);
+        Arrays.sort(this.points);
+        Point[] aux = Arrays.copyOf(this.points, this.points.length);
         ArrayList<LineSegment> collector = new ArrayList<>();
         int N = aux.length;
 
         for (int i = 0; i < N; i++) {
-            Point p = points[i];
+            Point p = this.points[i];
             Arrays.sort(aux);
             Arrays.sort(aux, p.slopeOrder());
 

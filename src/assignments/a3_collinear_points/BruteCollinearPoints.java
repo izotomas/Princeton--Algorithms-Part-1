@@ -11,26 +11,31 @@ import java.util.Arrays;
 public class BruteCollinearPoints {
 
     private final LineSegment[] segments;
+    private final Point[] points;
 
     // finds all line segments containing 4 points
     // points p, q, r, s are collinear, if slopes p-q, p-r and p-s are all equal
     public BruteCollinearPoints(Point[] points) {
         if (nullpoints(points)) throw new NullPointerException();
-        Arrays.sort(points);
-        if (duplicates(points)) throw new IllegalArgumentException();
+        this.points = new Point[points.length];
+        for (int i = 0; i < points.length; i++) {
+           this.points[i] = points[i];
+        }
+        Arrays.sort(this.points);
+        if (duplicates(this.points)) throw new IllegalArgumentException();
         ArrayList<LineSegment> segments_list = new ArrayList<>();
 
-        int N = points.length;
+        int N = this.points.length;
         for (int p = 0; p < N - 3; p++) {
             for (int q = p + 1; q < N - 2; q++) {
                 for (int r = q + 1; r < N - 1; r++) {
-                    double PQ = points[p].slopeTo(points[q]);
-                    double PR = points[p].slopeTo(points[r]);
+                    double PQ = this.points[p].slopeTo(this.points[q]);
+                    double PR = this.points[p].slopeTo(this.points[r]);
                     if (PQ == PR){
                         for (int s = r + 1; s < N; s++) {
-                            double PS = points[p].slopeTo(points[s]);
+                            double PS = this.points[p].slopeTo(this.points[s]);
                             if (PQ == PS) {
-                                segments_list.add(new LineSegment(points[p], points[s]));
+                                segments_list.add(new LineSegment(this.points[p], this.points[s]));
                             }
                         }
                     }
