@@ -1,4 +1,4 @@
-package assignments.a3_puzzle;
+package assignments.a4_puzzle;
 import edu.princeton.cs.algs4.MinPQ;
 
 import java.util.ArrayList;

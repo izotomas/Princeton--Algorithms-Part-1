@@ -1,4 +1,4 @@
-package assignments.a3_puzzle;
+package assignments.a4_puzzle;
 
 import java.util.ArrayList;
 
