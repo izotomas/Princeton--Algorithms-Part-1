@@ -15,8 +15,8 @@ public class KdTree {
 
     private Node root;
 
-    private Point2D nearestPoint;
-    private double minDistance;
+    private Point2D nearest;
+    private double nearestD;
 
     private class Node {
         private final boolean type;
@@ -32,7 +32,8 @@ public class KdTree {
     }
 
     // construct an empty set of points
-    public KdTree(){ }
+    public KdTree(){    }
+
 
     // is the set empty?
     public boolean isEmpty(){
@@ -158,42 +159,33 @@ public class KdTree {
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
         if (p == null) throw new NullPointerException();
-
-        nearestPoint = null;
-        minDistance = Double.POSITIVE_INFINITY;
+        nearest = null;
+        nearestD = Double.POSITIVE_INFINITY;
         nearest(root, p);
-        return nearestPoint;
+        return nearest;
     }
 
     private void nearest(Node n, Point2D p) {
         if (n == null) return;
 
-        double distance = p.distanceTo(n.point);
-        if (distance < minDistance) {
-            minDistance = distance;
-            nearestPoint = n.point;
+        double dist = p.distanceTo(n.point);
+        if (dist < nearestD) {
+            nearestD = dist;
+            nearest = n.point;
         }
 
-        if (n.type == X) {
-            if (p.x() < n.point.x()) {
-                nearest(n.left, p);
-                if (minDistance >= n.point.x() - p.x())
-                    nearest(n.right, p);
-            } else {
+        boolean t = n.type;
+        double x = n.point.x();
+        double y = n.point.y();
+
+        if ((t == X && p.x() < x) || (t == Y && p.y() < y) ) {
+            nearest(n.left, p);
+            if ((t == X && nearestD >= x - p.x()) || (t == Y && nearestD >= y - p.y()))
                 nearest(n.right, p);
-                if (minDistance >= p.x() - n.point.x())
-                    nearest(n.left, p);
-            }
         } else {
-            if (p.y() < n.point.y()) {
+            nearest(n.right, p);
+            if ((t == X && nearestD >= p.x() - x) || (t == Y && nearestD >= p.y() - y))
                 nearest(n.left, p);
-                if (minDistance >= n.point.y() - p.y())
-                    nearest(n.right, p);
-            } else {
-                nearest(n.right, p);
-                if (minDistance >= p.y() - n.point.y())
-                    nearest(n.left, p);
-            }
         }
     }
 
